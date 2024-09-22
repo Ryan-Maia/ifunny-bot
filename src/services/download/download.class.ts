@@ -14,7 +14,7 @@ interface Data {
 
 interface ServiceOptions { }
 
-export class Download implements ServiceMethods<Data> {
+export class Download {
   app: Application;
   options: ServiceOptions;
 
@@ -51,7 +51,41 @@ export class Download implements ServiceMethods<Data> {
     });
   }
 
-  async create(data: Data, params?: Params): Promise<Data> {
+  async downloadVideoAsBase64(url: string): Promise<string> {
+    // Fazendo a requisição com o 'axios' e indicando que a resposta será um stream de dados
+    const res = await axios({
+      url, // URL do vídeo
+      method: 'GET',
+      responseType: 'stream', // Importante: para receber os dados como um stream
+    });
+
+    // Array para armazenar os chunks de dados do stream
+    const chunks: Uint8Array[] = [];
+
+    // Retorna uma promise que resolve com a base64 do vídeo
+    return new Promise((resolve, reject) => {
+      res.data.on('data', (chunk: Uint8Array) => {
+        chunks.push(chunk); // Armazena cada chunk de dados
+      });
+
+      res.data.on('end', () => {
+        // Concatena todos os chunks e cria um buffer
+        const buffer = Buffer.concat(chunks);
+
+        // Converte o buffer para base64
+        const base64String = buffer.toString('base64');
+
+        resolve(base64String); // Retorna a string base64
+      });
+
+      res.data.on('error', (err: Error) => {
+        console.error(`Erro ao baixar o vídeo: ${err}`);
+        reject(err); // Rejeita a promise se houver algum erro
+      });
+    });
+  }
+
+  async create(data: Data, params?: Params): Promise<any> {
     const link = data.link;
 
     try {
@@ -73,10 +107,12 @@ export class Download implements ServiceMethods<Data> {
         console.log(videoUrl);
 
         if (videoUrl) {
-          const videoName = path.basename(videoUrl);
-          console.log(`Baixando vídeo: ${videoUrl}`);
-          await this.downloadVideo(videoUrl, videoName);
-          console.log(`Vídeo salvo como: ${videoName}`);
+          return videoUrl;
+          // const videoName = path.basename(videoUrl);
+          // console.log(`Baixando vídeo: ${videoUrl}`);
+          // return await this.downloadVideoAsBase64(videoUrl);
+          // await this.downloadVideo(videoUrl, videoName);
+          // console.log(`Vídeo salvo como: ${videoName}`);
         } else {
           console.log('URL do vídeo não encontrada.');
         }

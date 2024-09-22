@@ -48,6 +48,7 @@
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
     "@types/jest": "^29.5.12",
+    "@types/qrcode-terminal": "^0.12.2",
     "@types/serve-favicon": "^2.5.7",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
@@ -69,7 +70,10 @@
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
     "node-fetch": "^3.3.2",
+    "pino": "^9.4.0",
+    "qrcode-terminal": "^0.12.0",
     "serve-favicon": "^2.5.0",
+    "whatsapp-web.js": "^1.26.0",
     "winston": "^3.14.2"
   }
 }

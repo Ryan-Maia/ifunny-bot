@@ -17,7 +17,7 @@ import services from './services';
 import appHooks from './app.hooks';
 import { HookContext as FeathersHookContext } from '@feathersjs/feathers';
 // Don't remove this comment. It's needed to format import lines nicely.
-
+import whatsapp from './listener/whatsapp';
 const app: Application = express(feathers());
 export type HookContext<T = any> = { app: Application } & FeathersHookContext<T>;
 
@@ -27,6 +27,10 @@ app.configure(configuration());
 app.use(helmet({
   contentSecurityPolicy: false
 }));
+
+console.log("ue");
+app.configure(whatsapp);
+
 app.use(cors());
 app.use(compress());
 app.use(express.json());

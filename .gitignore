@@ -111,4 +111,6 @@ $RECYCLE.BIN/
 lib/
 data/
 
+.wwebjs_cache
+
 src/services/download/videos/*
