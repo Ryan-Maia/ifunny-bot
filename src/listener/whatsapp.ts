@@ -6,9 +6,9 @@ import logger from '../logger';
 // Create a new client instance
 const client = new Client({
   puppeteer: {
-    headless: false,
-    devtools: true,
-    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    executablePath: '/usr/bin/google-chrome-stable',
   }
 });
 
