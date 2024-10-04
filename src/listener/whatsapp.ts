@@ -7,8 +7,8 @@ import logger from '../logger';
 const client = new Client({
   puppeteer: {
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    executablePath: '/usr/bin/google-chrome-stable',
+    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    // executablePath: '/usr/bin/google-chrome-stable',
   }
 });
 
@@ -27,6 +27,21 @@ export default function (app: Application): void {
   });
 
   client.on('message_create', async (message) => {
+    if (message.from === '120363298153313016@g.us') {
+      try {
+        const chance = Math.random() * 100; // Gera um número entre 0 e 100
+
+        console.log("Mensagem recebida do Gabriel, chance gerada:", chance)
+        // if (chance <= 100) { // 30% de chance
+        const chat = await message.getChat();
+        const content = MessageMedia.fromFilePath('./public/vaiterquechorar.png');
+        await client.sendMessage(chat.id._serialized, content, { sendMediaAsSticker: true });
+        // }
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
     if (message.body.includes('https://br.ifunny.co/video/')) {
 
       try {
@@ -35,6 +50,7 @@ export default function (app: Application): void {
         const media = await MessageMedia.fromUrl(videoTrueUrl);
         await client.sendMessage(message.from, media);
         await client.sendMessage(message.from, '------------');
+
       } catch (error) {
         console.log(error);
         logger.error(error);
