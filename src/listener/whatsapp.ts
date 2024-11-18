@@ -1,3 +1,4 @@
+import os from 'node:os';
 import { Client, MessageMedia } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 import { Application } from '@feathersjs/feathers';
@@ -7,8 +8,7 @@ import logger from '../logger';
 const client = new Client({
   puppeteer: {
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    // executablePath: '/usr/bin/google-chrome-stable',
+    executablePath: os.type() == 'Linux' ? '/usr/bin/google-chrome-stable' : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   }
 });
 
