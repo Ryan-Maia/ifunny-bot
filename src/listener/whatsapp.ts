@@ -29,7 +29,10 @@ export default function (app: Application): void {
   client.on('message_create', async (message) => {
 
     if (message.body == '!s') {
-      const content = await message.downloadMedia();
+      const quotedMessage = await message.getQuotedMessage();
+
+      const content = quotedMessage ? await quotedMessage.downloadMedia() : await message.downloadMedia();
+
       const chat = await message.getChat();
       await client.sendMessage(chat.id._serialized, content, {
         sendMediaAsSticker: true 
